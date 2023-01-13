@@ -12,33 +12,14 @@ function TableHeader(){
 }
 
 function TableBody(props){
-    
-    // return (
-    //     <tbody>
-    //         <tr>
-    //             <td>Charlie</td>
-    //             <td>Janitor</td>
-    //         </tr>
-    //         <tr>
-    //             <td>Mac</td>
-    //             <td>Bouncer</td>
-    //         </tr>
-    //         <tr>
-    //             <td>Dee</td>
-    //             <td>Aspiring actress</td>
-    //         </tr>
-    //         <tr>
-    //             <td>Dennis</td>
-    //             <td>Bartender</td>
-    //         </tr>
-    //     </tbody>
-    // );
-
     const rows = props.characterData.map((row, index) => {
         return (
             <tr key = {index}>
                 <td>{row.name}</td>
                 <td>{row.job}</td>
+                <td>
+                    <button onClick = {() => props.removeCharacter(index)}>Delete</button>
+                </td>
             </tr>
         );
     });
@@ -54,7 +35,7 @@ function Table(props) {
     return (
         <table>
             <TableHeader />
-            <TableBody characterData = {props.characterData} />
+            <TableBody characterData = {props.characterData} removeCharacter = {props.removeCharacter} />
         </table>
     );  
 }
