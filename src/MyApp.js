@@ -13,13 +13,6 @@ function MyApp(){
          });
      }, [] ); 
 
-    function removeOneCharacter (index) {
-        const updated = characters.filter((character, i) => {
-            return i !== index
-        });
-        setCharacters(updated);
-    }
-
     return (
         <div className="container">
             <Table characterData={characters} removeCharacter={removeOneCharacter} />
@@ -40,8 +33,9 @@ function MyApp(){
     
      async function makePostCall(person){
         try {
-           const response = await axios.post('http://localhost:5000/users', person);
-           return response;
+            //  console.log("MakePost")
+            const response = await axios.post('http://localhost:5000/users', person);
+            return response;
         }
         catch (error) {
            console.log(error);
@@ -49,12 +43,39 @@ function MyApp(){
         }
      }
 
+     async function makeDeleteCall(index){
+        try{
+            let id = characters[index].id
+            let url = 'http://localhost:5000/users/' + id
+            const response = await axios.delete(url)
+            return response
+        }
+        catch (error){
+            console.log(error);
+            return false;
+        }
+     }
+
      function updateList(person) { 
         makePostCall(person).then( result => {
         if (result && result.status === 201)
-           setCharacters([...characters, person] );
+            console.log(result.data)
+            setCharacters([...characters, result.data] );
         });
      }
+
+     function removeOneCharacter (index) {
+        
+        //console.log(characters[index].id)
+        makeDeleteCall(index).then( result => {
+            if (result && result.status === 204){
+                const updated = characters.filter((character, i) => {
+                    return i !== index
+                });
+                setCharacters(updated);
+            }
+        });
+    }
     
 }
 
